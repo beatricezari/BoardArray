@@ -14,17 +14,38 @@ class BoardArray : public Board {
         }
 
         void add(Entry* entry) {
-            for(int i = 0; i < index; i++){
-                Entry existing = array[i];
-                array[i].compare(entry);
-                Entry current = array[i];
+            if (index == 0) {
+                array[0] = *entry;
+                index++;
+                return;
+            }
+           
+            int pos = index;
+                for (int i = 0; i < index; i++) {
+                    if (entry->compare(&array[i])) {
+                        pos = i;
+                        break;
+                    }
                 }
-        
-            // TODO: IMPLEMENT THIS FUNCTION
-            // ALGORITHM IS PROVIDED IN INSTRUCTIONS.TXT
-            return;
+           
+            if (index < SIZE) {
+                for (int j = index; j > pos; j--) {
+                        array[j] = array[j - 1];
+                    }
+                    array[pos] = *entry;
+                    index++;
+            }else {
+                if (entry->compare(&array[index - 1])) {
+                    for (int j = index - 1; j > pos; j--) {
+                        array[j] = array[j - 1];
+                    }
+                        array[pos] = *entry;
+                    } else {
+                      cout << entry->name << "'s score is too low to be added!" << endl;                                
+                }
+            }
         }
-
+       
         void print() {
             for (int i = 0; i < index; i++) {
                 cout << i + 1 << ". ";
